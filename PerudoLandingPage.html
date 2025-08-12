@@ -1,428 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Perudo — Bluff, Bid, and Reveal</title>
-  <meta name="description" content="Perudo (Liar's Dice) — fast, modern, and beautiful web experience. Play with friends online or solo practice." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #11192a;
-      --muted: #9fb0cc;
-      --text: #e6eefc;
-      --brand1: #6366f1; /* indigo */
-      --brand2: #22d3ee; /* cyan */
-      --accent: #38bdf8; /* sky */
-      --border: rgba(255,255,255,.08);
-      --ring: rgba(99,102,241,.35);
-    }
-    * { box-sizing: border-box }
-    html,body { height:100% }
-    body {
-      margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-      background: radial-gradient(90rem 90rem at -10% -20%, #0d1530 20%, var(--bg) 60%), radial-gradient(70rem 70rem at 120% 120%, #0a1733 10%, var(--bg) 60%);
-      color: var(--text);
-    }
-    a { color: inherit; text-decoration: none }
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 20px }
-    .nav {
-      position: sticky; top: 0; z-index: 40; backdrop-filter: blur(8px);
-      background: rgba(17,25,42,.5); border-bottom: 1px solid var(--border);
-    }
-    .nav-inner { height: 64px; display:flex; align-items:center; justify-content:space-between }
-    .brand { display:flex; align-items:center; gap:.75rem; font-weight:700 }
-    .logo {
-      width: 36px; height: 36px; border-radius: 12px;
-      background: linear-gradient(135deg, var(--brand1), var(--brand2));
-      display:grid; place-items:center; box-shadow: 0 10px 30px var(--ring);
-      font-weight:900; letter-spacing:.5px
-    }
-    .nav-links { display:none; gap: 1.25rem; font-size: .95rem }
-    .nav-cta { display:none; gap:.5rem }
-    .btn { padding: .6rem 1rem; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.04); color: var(--text) }
-    .btn:hover { background: rgba(255,255,255,.08) }
-    .btn-primary { background: linear-gradient(90deg, var(--brand1), var(--brand2)); border: none }
-    .btn-primary:hover { filter: brightness(1.05) }
-    .menu { display: inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; border:1px solid var(--border); background:rgba(255,255,255,.04) }
-
-    /* hero */
-    .hero { position:relative; overflow:hidden }
-    .hero-blob-1, .hero-blob-2 {
-      position:absolute; filter: blur(80px); opacity:.35; pointer-events:none;
-    }
-    .hero-blob-1 { width: 640px; height: 640px; border-radius: 50%; background: var(--brand1); top: -180px; right: -220px }
-    .hero-blob-2 { width: 520px; height: 520px; border-radius: 50%; background: var(--brand2); bottom: -160px; left: -120px }
-    .hero-grid { display:grid; gap:2rem; grid-template-columns: 1.15fr 1fr; align-items:center; padding: 64px 0 72px }
-    .headline { font-size: clamp(2rem, 4vw + 1rem, 3.5rem); line-height: 1.05; font-weight: 900 }
-    .sub { margin-top: 12px; color: var(--muted) }
-    .cta-row { display:flex; gap:.75rem; margin-top: 24px; flex-wrap: wrap }
-
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; padding: 22px; box-shadow: 0 10px 40px rgba(0,0,0,.35) }
-    .badge { font-size:.75rem; padding:.35rem .6rem; border-radius:999px; background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.35) }
-    .dice-grid { display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:.5rem; margin-top: 14px }
-    .die { aspect-ratio:1/1; display:grid; place-items:center; border-radius:14px; background:#0f172a; border: 1px solid var(--border); font-weight:800 }
-
-    /* sections */
-    section { padding: 80px 0 }
-    .section-title { font-size: clamp(1.5rem, 1.4rem + 1vw, 2.25rem); font-weight:800 }
-    .muted { color: var(--muted) }
-
-    .features { display:grid; gap: 16px; grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 28px }
-    .feature { padding: 18px; border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid var(--border) }
-    .feature .icon { width:42px; height:42px; border-radius:12px; display:grid; place-items:center; background: linear-gradient(135deg, var(--brand1), var(--accent)); margin-bottom: .75rem; font-weight:800 }
-
-    .how-grid { display:grid; gap: 28px; grid-template-columns: 1fr 1fr; align-items:flex-start }
-    .ordered { padding-left: 1rem }
-    .board7 { display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top:12px }
-    .cell { aspect-ratio:1/1; display:grid; place-items:center; border: 1px solid var(--border); border-radius: 10px; background: #0d1426; font-size:.8rem }
-    .token { width: 36px; height:36px; border-radius: 999px; display:grid; place-items:center; background: rgba(99,102,241,.3); border:1px solid rgba(99,102,241,.6); font-weight:800 }
-
-    .pricing { display:grid; gap: 16px; grid-template-columns: 1fr 1fr; margin-top: 28px }
-    .card { border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid var(--border); padding: 24px }
-    .card.pop { background: linear-gradient(180deg, rgba(99,102,241,.18), rgba(34,211,238,.14)); border-color: rgba(99,102,241,.45) }
-    .price { font-size: 2.25rem; font-weight:900 }
-
-    .faq { display:grid; gap: 16px; grid-template-columns: 1fr 1fr }
-
-    .footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size:.95rem }
-
-    /* responsive */
-    @media (max-width: 960px) {
-      .nav-links, .nav-cta { display:none }
-      .hero-grid { grid-template-columns: 1fr; padding: 48px 0 56px }
-      .features { grid-template-columns: 1fr 1fr }
-      .how-grid { grid-template-columns: 1fr }
-      .pricing { grid-template-columns: 1fr }
-      .faq { grid-template-columns: 1fr }
-    }
-    @media (min-width: 961px) {
-      .nav-links { display:flex }
-      .nav-cta { display:flex }
-      .menu { display:none }
-    }
-
-    /* mobile drawer */
-    .drawer { position: fixed; inset: 0; background: rgba(0,0,0,.6); display:none; z-index:50 }
-    .drawer.open { display:block }
-    .sheet { background: var(--panel); border-left: 1px solid var(--border); width: 84%; max-width: 360px; height: 100%; margin-left:auto; padding: 20px; display:flex; flex-direction:column; gap:10px }
-    .sheet a { padding: 12px 8px; border-radius: 10px }
-    .sheet a:hover { background: rgba(255,255,255,.06) }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Perudo — Bluffing Dice Game</title>
+<style>
+  body {margin:0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e293b, #0f172a); color: white;}
+  header {position: sticky; top: 0; background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.1);}
+  nav {max-width: 1200px; margin: auto; padding: 0 16px; height: 64px; display: flex; justify-content: space-between; align-items: center;}
+  nav a {color: white; text-decoration: none; margin: 0 8px;}
+  nav a:hover {color: #fde047;}
+  .hero {max-width: 1200px; margin: auto; padding: 64px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;}
+  .hero h1 {font-size: 2.5rem; font-weight: bold; background: linear-gradient(to right, #fde047, #f97316); -webkit-background-clip: text; color: transparent;}
+  .hero p {color: #cbd5e1; margin-top: 16px;}
+  .buttons {margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;}
+  .btn {padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; text-decoration: none;}
+  .btn:hover {background: rgba(255,255,255,0.1);}
+  .btn-primary {background: linear-gradient(to right, #facc15, #f97316); border: none;}
+  .card {background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 20px;}
+  .card h3 {margin: 0 0 8px;}
+  @media (max-width: 768px) {.hero {grid-template-columns: 1fr;}}
+</style>
 </head>
 <body>
-  <!-- NAV -->
-  <header class="nav">
-    <div class="container nav-inner">
-      <a href="#home" class="brand" aria-label="Perudo home">
-        <div class="logo">P</div>
-        <span>Perudo</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary">
-        <a href="#features">Features</a>
-        <a href="#how">How to Play</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <div class="nav-cta">
-        <button class="btn" id="btn-login">Sign in</button>
-        <a class="btn btn-primary" href="#pricing">Get the Game</a>
-      </div>
-      <button class="menu" id="menuBtn" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+<header>
+  <nav>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:36px; height:36px; border-radius:12px; background:linear-gradient(to top right, #facc15, #f97316); display:flex; align-items:center; justify-content:center; font-weight:bold;">P</div>
+      <span>Perudo</span>
     </div>
-  </header>
-
-  <!-- MOBILE DRAWER -->
-  <div class="drawer" id="drawer" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true" aria-label="Mobile menu">
-      <div style="display:flex; align-items:center; justify-content:space-between;">
-        <div class="brand"><div class="logo">P</div><span>Perudo</span></div>
-        <button class="menu" id="closeDrawer" aria-label="Close menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <a href="#features" onclick="closeDrawer()">Features</a>
-      <a href="#how" onclick="closeDrawer()">How to Play</a>
-      <a href="#pricing" onclick="closeDrawer()">Pricing</a>
-      <a href="#faq" onclick="closeDrawer()">FAQ</a>
-      <div style="height:8px"></div>
-      <button class="btn" onclick="openAuth(true)">Sign in</button>
-      <a class="btn btn-primary" href="#pricing" onclick="closeDrawer()">Get the Game</a>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#how">How to Play</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </nav>
+</header>
+<section class="hero">
+  <div>
+    <h1>Perudo — the ultimate bluffing dice game.</h1>
+    <p>A fast, exciting, and strategic dice game. Play with friends or challenge players worldwide.</p>
+    <div class="buttons">
+      <a href="#how" class="btn">Learn How</a>
+      <a href="#pricing" class="btn btn-primary">Play Now</a>
     </div>
   </div>
-
-  <!-- HERO -->
-  <section id="home" class="hero">
-    <div class="hero-blob-1"></div>
-    <div class="hero-blob-2"></div>
-    <div class="container hero-grid">
-      <div>
-        <h1 class="headline">Perudo — bluff, bid, and reveal with style.</h1>
-        <p class="sub">A sleek, modern take on the classic Liar's Dice. Create rooms, invite friends, and outsmart your rivals with bold bids and timely "Liar!" calls.</p>
-        <div class="cta-row">
-          <a href="#how" class="btn">How it works</a>
-          <a href="#pricing" class="btn btn-primary">Play now</a>
-        </div>
-        <p class="muted" style="margin-top:10px; font-size:.9rem">Fully responsive • Keyboard-friendly • Works great on mobile</p>
-      </div>
-      <div class="panel">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-          <div>
-            <h3 style="margin:0">Quick Demo</h3>
-            <p class="muted" style="margin:.2rem 0 0">Roll dice • Place a bid • Call Liar</p>
-          </div>
-          <span class="badge">v1.0</span>
-        </div>
-        <div class="dice-grid" id="demoGrid"></div>
-        <div style="display:flex; gap:.5rem; margin-top:12px">
-          <button class="btn" onclick="rollDiceDemo()">Roll Dice</button>
-          <button class="btn btn-primary" onclick="randomBid()">Place Bid</button>
-        </div>
-        <p id="bidText" class="muted" style="margin-top:10px"></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="features">
-    <div class="container">
-      <div style="text-align:center; max-width:720px; margin:0 auto">
-        <h2 class="section-title">Why you'll love Perudo</h2>
-        <p class="muted">Fast matchmaking, smooth UI, and fair play — all in a polished web experience.</p>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <div class="icon">⚡</div>
-          <h3>Lightning‑fast rooms</h3>
-          <p class="muted">Create or join a room in seconds. Invite friends with a shareable link.</p>
-        </div>
-        <div class="feature">
-          <div class="icon">🎲</div>
-          <h3>Smart dice visuals</h3>
-          <p class="muted">Clean, readable dice with subtle animations — clarity without clutter.</p>
-        </div>
-        <div class="feature">
-          <div class="icon">🧠</div>
-          <h3>Skill‑based matchmaking</h3>
-          <p class="muted">Face players around your level for tight, fair games.</p>
-        </div>
-        <div class="feature">
-          <div class="icon">🎧</div>
-          <h3>Table chat</h3>
-          <p class="muted">Built‑in chat enhances the bluffing mind games — optional and moderated.</p>
-        </div>
-        <div class="feature">
-          <div class="icon">📱</div>
-          <h3>Fully responsive</h3>
-          <p class="muted">Optimized for phone, tablet, and desktop. Installable as a PWA.</p>
-        </div>
-        <div class="feature">
-          <div class="icon">🔒</div>
-          <h3>Fair & secure</h3>
-          <p class="muted">Server‑verified rolls and anti‑cheat checks keep games honest.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW TO PLAY -->
-  <section id="how" style="background: rgba(255,255,255,.02); border-top:1px solid var(--border); border-bottom:1px solid var(--border)">
-    <div class="container">
-      <div class="how-grid">
-        <div>
-          <h2 class="section-title">How to Play</h2>
-          <ol class="ordered">
-            <li style="margin:.5rem 0">Each player secretly rolls their dice.</li>
-            <li style="margin:.5rem 0">Starting player bids a <em>quantity</em> and a <em>face</em> (e.g., “five 3s”).</li>
-            <li style="margin:.5rem 0">Next player must raise the quantity or face — or call <strong>Liar!</strong></li>
-            <li style="margin:.5rem 0">On a Liar call, all dice are revealed. If the bid was wrong, bidder loses a die; otherwise, the caller does.</li>
-            <li style="margin:.5rem 0">Last player with dice wins. Optional wild‑1s and palifico rules supported.</li>
-          </ol>
-          <p class="muted" style="margin-top:10px">Customize rules in Settings: wilds, exact bids, palifico, and more.</p>
-        </div>
-        <div class="panel">
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-            <h3 style="margin:0">Sample board</h3>
-            <span class="badge">Room #2741</span>
-          </div>
-          <div class="board7" id="board7"></div>
-          <div style="display:flex; gap:.5rem; margin-top:12px">
-            <button class="btn" onclick="simulateRound()">Simulate round</button>
-            <button class="btn btn-primary" onclick="callLiar()">Call Liar!</button>
-          </div>
-          <p class="muted" id="roundText" style="margin-top:10px"></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing">
-    <div class="container">
-      <div style="text-align:center; max-width:720px; margin:0 auto">
-        <h2 class="section-title">Pricing</h2>
-        <p class="muted">Try free, upgrade when you’re hooked.</p>
-      </div>
-      <div class="pricing">
-        <div class="card">
-          <h3 style="margin:0 0 .25rem">Free</h3>
-          <p class="muted">Practice mode • Local pass‑and‑play • Basic themes</p>
-          <div class="price" style="margin-top:10px">$0</div>
-          <a class="btn" href="#" style="margin-top:12px; display:inline-block">Try it now</a>
-        </div>
-        <div class="card pop">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-            <h3 style="margin:0">Full Game</h3>
-            <span class="badge">Most popular</span>
-          </div>
-          <p class="muted">Online rooms • Ranked play • Advanced rules • Cosmetics</p>
-          <div class="price" style="margin-top:10px">£15</div>
-          <a class="btn btn-primary" href="#" style="margin-top:12px; display:inline-block">Buy now</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" style="background: rgba(255,255,255,.02); border-top:1px solid var(--border)">
-    <div class="container">
-      <h2 class="section-title" style="text-align:center">FAQ</h2>
-      <div class="faq" style="margin-top:20px">
-        <div class="card">
-          <h4 style="margin:0 0 .25rem">Is Perudo the same as Liar’s Dice?</h4>
-          <p class="muted">Perudo is a popular ruleset of Liar’s Dice with regional twists. We support common variants like wild 1s and palifico.</p>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 .25rem">Can I play with friends?</h4>
-          <p class="muted">Yes. Create a room, share the link, and you’re in the same table in seconds.</p>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 .25rem">Mobile support?</h4>
-          <p class="muted">Absolutely. The site is fully responsive and installable as a PWA.</p>
-        </div>
-        <div class="card">
-          <h4 style="margin:0 0 .25rem">Refunds?</h4>
-          <p class="muted">Example policy: within 14 days if no ranked games were played. Replace with your real policy.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
-      <span>© <span id="year"></span> Perudo. All rights reserved.</span>
-      <div style="display:flex; gap:14px">
-        <a href="#features">Features</a>
-        <a href="#how">How to Play</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#" id="footerLogin">Sign in</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- AUTH MODAL (light) -->
-  <div id="authModal" style="position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.6); z-index:60">
-    <div class="panel" style="width:min(92vw,480px)" role="dialog" aria-modal="true" aria-label="Authentication">
-      <div style="display:flex; align-items:center; justify-content:space-between;">
-        <h3 id="authTitle" style="margin:0">Sign in</h3>
-        <button class="menu" onclick="closeAuth()" aria-label="Close auth">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <form style="margin-top:14px; display:grid; gap:12px" onsubmit="event.preventDefault()">
-        <label style="display:grid; gap:6px">
-          <span class="muted">Email</span>
-          <input type="email" placeholder="you@example.com" style="padding:12px 14px; border:1px solid var(--border); background:#0d1526; color:var(--text); border-radius:12px; outline:none" />
-        </label>
-        <label style="display:grid; gap:6px">
-          <span class="muted">Password</span>
-          <input type="password" placeholder="••••••••" style="padding:12px 14px; border:1px solid var(--border); background:#0d1526; color:var(--text); border-radius:12px; outline:none" />
-        </label>
-        <button class="btn btn-primary" type="submit">Continue</button>
-        <p class="muted" style="text-align:center; font-size:.95rem">No account? <a href="#" onclick="toggleAuth(false)" style="text-decoration:underline">Create one</a></p>
-      </form>
+  <div class="card">
+    <h3>Quick Start</h3>
+    <p>Learn in 2 minutes, master in 20.</p>
+    <div class="buttons">
+      <button class="btn">Single Player</button>
+      <button class="btn btn-primary">Multiplayer</button>
     </div>
   </div>
-
-  <script>
-    const yearEl = document.getElementById('year');
-    yearEl.textContent = new Date().getFullYear();
-
-    // mobile drawer
-    const drawer = document.getElementById('drawer');
-    const menuBtn = document.getElementById('menuBtn');
-    const closeDrawerBtn = document.getElementById('closeDrawer');
-    menuBtn.addEventListener('click', () => drawer.classList.add('open'));
-    closeDrawerBtn.addEventListener('click', () => drawer.classList.remove('open'));
-    function closeDrawer(){ drawer.classList.remove('open'); }
-
-    // auth modal
-    const authModal = document.getElementById('authModal');
-    const btnLogin = document.getElementById('btn-login');
-    const footerLogin = document.getElementById('footerLogin');
-    function openAuth(isLogin){
-      document.getElementById('authTitle').textContent = isLogin ? 'Sign in' : 'Create account';
-      authModal.style.display = 'grid';
-    }
-    function toggleAuth(toLogin){
-      document.getElementById('authTitle').textContent = toLogin ? 'Sign in' : 'Create account';
-    }
-    function closeAuth(){ authModal.style.display = 'none'; }
-    btnLogin.addEventListener('click', () => openAuth(true));
-    footerLogin.addEventListener('click', (e) => { e.preventDefault(); openAuth(true); });
-
-    // hero demo grid
-    const demoGrid = document.getElementById('demoGrid');
-    const bidText = document.getElementById('bidText');
-    function renderDice(el, n=5){
-      el.innerHTML = '';
-      for(let i=0;i<n;i++){
-        const v = Math.floor(Math.random()*6)+1;
-        const d = document.createElement('div');
-        d.className = 'die';
-        d.textContent = v;
-        el.appendChild(d);
-      }
-    }
-    function rollDiceDemo(){ renderDice(demoGrid, 5); bidText.textContent = '' }
-    function randomBid(){
-      const qty = Math.floor(Math.random()*5)+2; // 2..6
-      const face = Math.floor(Math.random()*6)+1; // 1..6
-      bidText.textContent = `Bid: ${qty} × ${face}s`;
-    }
-    rollDiceDemo();
-
-    // How-to board mock
-    const board7 = document.getElementById('board7');
-    function renderBoard(){
-      board7.innerHTML = '';
-      for(let i=1;i<=49;i++){
-        const c = document.createElement('div');
-        c.className = 'cell';
-        if(i===25){
-          const t = document.createElement('div');
-          t.className = 'token';
-          t.textContent = '⚑';
-          c.appendChild(t);
-        } else { c.textContent = ( (i-1)%6 ) + 1; }
-        board7.appendChild(c);
-      }
-    }
-    function simulateRound(){
-      const qty = Math.floor(Math.random()*4)+3; // 3..6
-      const face = Math.floor(Math.random()*6)+1;
-      document.getElementById('roundText').textContent = `Players are estimating ~ ${qty} × ${face}s on the table…`;
-    }
-    function callLiar(){
-      const ok = Math.random() > .5;
-      document.getElementById('roundText').textContent = ok ? 'Liar call was RIGHT — bidder loses a die.' : 'Liar call was WRONG — caller loses a die.';
-    }
-    renderBoard();
-  </script>
+</section>
 </body>
 </html>
