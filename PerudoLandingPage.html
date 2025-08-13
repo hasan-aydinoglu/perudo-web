@@ -1,59 +1,139 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Perudo — Bluffing Dice Game</title>
-<style>
-  body {margin:0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e293b, #0f172a); color: white;}
-  header {position: sticky; top: 0; background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.1);}
-  nav {max-width: 1200px; margin: auto; padding: 0 16px; height: 64px; display: flex; justify-content: space-between; align-items: center;}
-  nav a {color: white; text-decoration: none; margin: 0 8px;}
-  nav a:hover {color: #fde047;}
-  .hero {max-width: 1200px; margin: auto; padding: 64px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;}
-  .hero h1 {font-size: 2.5rem; font-weight: bold; background: linear-gradient(to right, #fde047, #f97316); -webkit-background-clip: text; color: transparent;}
-  .hero p {color: #cbd5e1; margin-top: 16px;}
-  .buttons {margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;}
-  .btn {padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; text-decoration: none;}
-  .btn:hover {background: rgba(255,255,255,0.1);}
-  .btn-primary {background: linear-gradient(to right, #facc15, #f97316); border: none;}
-  .card {background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 20px;}
-  .card h3 {margin: 0 0 8px;}
-  @media (max-width: 768px) {.hero {grid-template-columns: 1fr;}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perudo — The Ultimate Bluffing Dice Game</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<header>
-  <nav>
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div style="width:36px; height:36px; border-radius:12px; background:linear-gradient(to top right, #facc15, #f97316); display:flex; align-items:center; justify-content:center; font-weight:bold;">P</div>
-      <span>Perudo</span>
+<body style="margin:0; font-family:sans-serif; background:linear-gradient(to bottom right, #0f172a, #1e293b); color:white;">
+
+  <!-- NAVBAR -->
+  <header style="padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.1); position:sticky; top:0;">
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <div style="width:36px; height:36px; background:linear-gradient(to top right, #facc15, #f97316); display:grid; place-items:center; border-radius:8px; font-weight:bold;">P</div>
+      <span style="font-size:1.2rem; font-weight:600;">Perudo</span>
     </div>
+    <nav style="display:flex; gap:1.5rem;">
+      <a href="#features" style="color:white; text-decoration:none;">Features</a>
+      <a href="#how" style="color:white; text-decoration:none;">How to Play</a>
+      <a href="#pricing" style="color:white; text-decoration:none;">Pricing</a>
+      <a href="#faq" style="color:white; text-decoration:none;">FAQ</a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section style="padding:4rem 2rem; max-width:1100px; margin:auto; display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;">
     <div>
-      <a href="#features">Features</a>
-      <a href="#how">How to Play</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
+      <h1 style="font-size:3rem; font-weight:900; background:linear-gradient(to right, #fde047, #fb923c); -webkit-background-clip:text; color:transparent;">Perudo — Where Bluff Meets Brilliance</h1>
+      <p style="margin-top:1rem; color:rgba(255,255,255,0.85); line-height:1.6;">
+        In the dusty markets of South America, travelers once gathered around worn wooden tables, cups in hand, dice rattling like distant thunder. From these humble beginnings came <strong>Perudo</strong> — a game where truth is optional, courage is rewarded, and every glance might be a bluff.
+      </p>
+      <p style="margin-top:1rem; color:rgba(255,255,255,0.85); line-height:1.6;">
+        Will you speak the truth? Or weave a lie so convincing that no one dares call it? Learn the rules in minutes — but spend a lifetime perfecting your strategy.
+      </p>
+      <div style="margin-top:2rem; display:flex; gap:1rem;">
+        <a href="#how" style="padding:0.8rem 1.5rem; border:1px solid rgba(255,255,255,0.2); border-radius:8px; text-decoration:none; color:white; background:rgba(255,255,255,0.05);">Learn How</a>
+        <a href="#play" style="padding:0.8rem 1.5rem; border-radius:8px; text-decoration:none; color:white; background:linear-gradient(to right, #ca8a04, #ea580c);">Play Now</a>
+      </div>
     </div>
-  </nav>
-</header>
-<section class="hero">
-  <div>
-    <h1>Perudo — the ultimate bluffing dice game.</h1>
-    <p>A fast, exciting, and strategic dice game. Play with friends or challenge players worldwide.</p>
-    <div class="buttons">
-      <a href="#how" class="btn">Learn How</a>
-      <a href="#pricing" class="btn btn-primary">Play Now</a>
+    <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:2rem; border-radius:16px; text-align:center;">
+      <h3 style="font-size:1.2rem; font-weight:600;">Quick Start</h3>
+      <p style="color:rgba(255,255,255,0.75);">Learn in 2 minutes, master in 20.</p>
+      <div style="margin-top:1.5rem; display:flex; gap:1rem;">
+        <button style="flex:1; padding:0.8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:white;">Single Player</button>
+        <button style="flex:1; padding:0.8rem; border-radius:8px; background:linear-gradient(to right, #ca8a04, #ea580c); color:white; border:none;">Multiplayer</button>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <h3>Quick Start</h3>
-    <p>Learn in 2 minutes, master in 20.</p>
-    <div class="buttons">
-      <button class="btn">Single Player</button>
-      <button class="btn btn-primary">Multiplayer</button>
+  </section>
+
+  <!-- HOW TO PLAY -->
+  <section id="how" style="padding:4rem 2rem; border-top:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03);">
+    <div style="max-width:1100px; margin:auto; display:grid; grid-template-columns:1.2fr 1fr; gap:2rem; align-items:start;">
+      <!-- Left: Rules -->
+      <div>
+        <h2 style="font-size:2rem; font-weight:800; margin:0 0 .75rem;">How to Play</h2>
+        <p style="color:rgba(255,255,255,0.85); margin:0 0 1.25rem;">Learn the core rules in minutes — no grids, just clear steps.</p>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px;">
+          <h3 style="margin:0 0 .5rem;">Setup</h3>
+          <ul style="margin:.5rem 0 0 1.1rem; color:rgba(255,255,255,0.9); line-height:1.7;">
+            <li>Players: 2–6. Each player gets a cup and <strong>5 dice</strong>.</li>
+            <li>Roll secretly under the cup and keep results hidden.</li>
+            <li>Choose a starting player (youngest/random).</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Objective</h3>
+          <p style="margin:0; color:rgba(255,255,255,0.9);">Be the <strong>last</strong> player with at least one die.</p>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Turn Structure</h3>
+          <ol style="margin:.5rem 0 0 1.1rem; color:rgba(255,255,255,0.9); line-height:1.7;">
+            <li><strong>Bid</strong> — The starting player declares a <em>quantity</em> and a <em>face</em> (e.g., <em>five 3s</em>). Quantity counts <em>all</em> dice on the table.</li>
+            <li><strong>Raise or Call</strong> — Next player must:
+              <ul style="margin:.5rem 0 0 1.1rem;">
+                <li><em>Raise</em> by increasing the quantity (e.g., five 4s → <strong>six</strong> 4s) or raising the face (five 4s → five <strong>5s</strong>), or</li>
+                <li>say <strong>“Liar!”</strong> to challenge the previous bid.</li>
+              </ul>
+            </li>
+            <li><strong>Reveal</strong> — On a Liar call, all cups lift and dice are revealed.</li>
+            <li><strong>Resolve</strong> — If the bid was <em>false</em>, the bidder loses one die. If the bid was <em>true</em> (enough matching dice), the caller loses one die.</li>
+            <li><strong>New Round</strong> — Everyone re‑rolls secretly. The player who lost a die starts the next bid.</li>
+          </ol>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Endgame</h3>
+          <p style="margin:0; color:rgba(255,255,255,0.9);">Players who lose all dice are out. Last player with dice wins the game.</p>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Optional Rules</h3>
+          <ul style="margin:.5rem 0 0 1.1rem; color:rgba(255,255,255,0.9); line-height:1.7;">
+            <li><strong>Wild 1s</strong> — 1s count as wilds (match any face) <em>until</em> a palifico round.</li>
+            <li><strong>Palifico</strong> — When a player drops to <strong>one die</strong>, during that round 1s are <em>not</em> wild and the face cannot change (only quantity can be raised).</li>
+            <li><strong>Exact Bid</strong> — If someone claims the exact count and is correct, they regain a lost die (or penalize another — choose your house rule).</li>
+          </ul>
+          <p style="margin:.6rem 0 0; color:rgba(255,255,255,0.7); font-size:.95rem;">Toggle these in Settings to match your preferred Perudo style.</p>
+        </div>
+
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Tips</h3>
+          <ul style="margin:.5rem 0 0 1.1rem; color:rgba(255,255,255,0.9); line-height:1.7;">
+            <li>Track the total dice in play — probabilities shift as dice are lost.</li>
+            <li>Use timing and table talk to pressure opponents.</li>
+            <li>Change your pace: quick bids can force mistakes.</li>
+            <li>When unsure, raising <em>quantity</em> is usually safer than raising <em>face</em>.</li>
+          </ul>
+        </div>
+
+        <p style="margin:1rem 0 0; color:rgba(255,255,255,0.8);"><strong>Quick Reference:</strong> Raise quantity <em>or</em> face • “Liar!” to challenge • Reveal • Loser of the challenge loses a die • Re‑roll.</p>
+      </div>
+
+      <!-- Right: Callouts / CTA -->
+      <aside>
+        <div class="card" style="background:linear-gradient(180deg, rgba(250,204,21,.15), rgba(234,88,12,.12)); border:1px solid rgba(250,204,21,.35); padding:1.25rem; border-radius:16px;">
+          <h3 style="margin:0 0 .5rem;">Why it’s brilliant</h3>
+          <p style="margin:0; color:rgba(255,255,255,0.9);">Easy rules, deep reads. Perudo rewards psychology as much as probability.</p>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:1.25rem; border-radius:16px; margin-top:1rem;">
+          <h3 style="margin:0 0 .5rem;">Play Modes</h3>
+          <ul style="margin:.5rem 0 0 1.1rem; color:rgba(255,255,255,0.9); line-height:1.7;">
+            <li>Practice (solo)</li>
+            <li>Pass‑and‑Play (local)</li>
+            <li>Online Rooms (with friends)</li>
+            <li>Ranked (matchmaking)</li>
+          </ul>
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+          <a href="#pricing" style="flex:1; padding:.9rem 1rem; border-radius:10px; background:linear-gradient(to right, #ca8a04, #ea580c); color:white; text-align:center; text-decoration:none;">Get the Game</a>
+          <a href="#faq" style="flex:1; padding:.9rem 1rem; border:1px solid rgba(255,255,255,0.2); border-radius:10px; text-align:center; color:white; text-decoration:none;">Read FAQ</a>
+        </div>
+      </aside>
     </div>
-  </div>
-</section>
+  </section>
+
 </body>
 </html>
